@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .row
+    .col.m12
+      h1 Ha ocurrido un error !
+    .col.m12
+      .card-panel.amber.accent-3
+        p 
+          | El SDK devuelve errores de nombre TransbankError si 
+          | es otro tipo de error esto puede significar que el proyecto de ejemplo tiene
+          | algún tipo de problema. Si quieres reportarlo puedes hacerlo 
+          | en <a href="https://github.com/TransbankDevelopers/transbank-sdk-nodejs-webpay-rest-example/issues">Github</a>
+  .row
+    .col.m12
+      h3= error.name
+      pre= error.stack
+  .row(style="margin-top: 80px")
+    .col.m4
+      a.btn.waves-effect.waves-dark.white.black-text(href="/") Volver al inicio

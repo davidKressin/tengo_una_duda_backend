@@ -1,0 +1,48 @@
+extends layout
+
+block content
+  .row
+    .col.m12.center-align
+      img(src='/images/tbk.png', height=100)
+  .row
+    .col.m12
+      .card-panel.cyan.darken-1
+        span.white-text
+          | Bienvenido al proyecto de prueba del SDK de Transbank para NodeJS
+          br
+          | En este proyecto podas probar las diferentes modalidades de los productos que ofrece Transbank disponibles en el SDK
+  // Webpay Plus
+  .row.valign-wrapper.m-b-40
+    .col.m4.s12
+      img.valign.product(src='/images/wpplus.png')
+    .col.m8.s12
+      .collection
+        a.collection-item.pink-text.text-darken-2(href='webpay_plus/create') Webpay Plus
+        a.collection-item.pink-text.text-darken-2(href='webpay_plus_deferred/create') Webpay Plus Diferido
+        a.collection-item.pink-text.text-darken-2(href='webpay_plus_mall/create') Webpay Plus Mall
+        a.collection-item.pink-text.text-darken-2(href='webpay_plus_mall_deferred/create') Webpay Plus Mall Diferido
+  // Oneclick
+  .row.valign-wrapper.m-b-40
+    .col.m8.s12
+      .collection
+        a.collection-item.pink-text.text-darken-2(href='oneclick_mall/start') Oneclick Mall
+        a.collection-item.pink-text.text-darken-2(href='oneclick_mall_deferred/start') Oneclick Mall Diferido
+    .col.m4.s12
+      img.valign.product(src='/images/oneclick.png')
+  // Transacción Completa
+  .row.valign-wrapper.m-b-40
+    .col.m4.s12
+      img.valign.product(src='/images/txcompleta.png')
+    .col.m8.s12
+      .collection
+        a.collection-item.pink-text.text-darken-2(href='transaccion_completa/form') Transacción Completa
+        a.collection-item.pink-text.text-darken-2(href='transaccion_completa_deferred/form') Transacción Completa Diferido
+        a.collection-item.pink-text.text-darken-2(href='transaccion_completa_mall/form') Transacción Completa Mall
+        a.collection-item.pink-text.text-darken-2(href='transaccion_completa_mall_deferred/form') Transacción Completa Mall Diferido
+  // PatPass Comercio
+  .row.valign-wrapper.m-b-40
+    .col.m8.s12
+      .collection
+        a.collection-item.pink-text.text-darken-2(href='/patpass_comercio/start') PatPass Comercio
+    .col.m4.s12
+      img.valign.product(src='/images/patpass.png')
