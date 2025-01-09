@@ -1,9 +1,9 @@
-const { ref, set, push, update } = require("firebase/database");
+const { ref, set, push, update, query, orderByChild, equalTo, get } = require("firebase/database");
 const { database: db } = require('../config/firebaseConfig'); // Ajusta la ruta según donde tengas tu firebaseConfig.js
 const WebpayPlus = require("transbank-sdk").WebpayPlus;
 const asyncHandler = require("../utils/async_handler");
 
-const writeDudaData = async (body) => {
+const writeDudaData = async (body,token) => {
   const newDudaRef = push(ref(db, 'dudas')); // Genera un nuevo ID automáticamente
 
   let {
@@ -23,56 +23,84 @@ const writeDudaData = async (body) => {
       materia,
       metodo,
       recompensa,
+      paidToken:token,
       paid
   }
   );
 
   console.log(body,newDudaRef.key);
-  return newDudaRef.key;
+  // return newDudaRef.key;
 }
 
-const setPaid = async (documentId) => {
+// const setPaid = async (documentId) => {
+//   try {
+//     const dudaRef = ref(db, `dudas/${documentId}`); // Referencia al documento con el ID especificado
+
+//     await update(dudaRef, { paid: true }); // Actualiza solo el campo "paid" a true
+
+//     console.log(`El campo "paid" del documento con ID ${documentId} se ha actualizado a true.`);
+//   } catch (error) {
+//     console.error(`Error al actualizar el campo "paid" para el documento con ID ${documentId}:`, error);
+//   }
+// };
+
+const setPaidByToken = async (paidTokenValue) => {
   try {
-    const dudaRef = ref(db, `dudas/${documentId}`); // Referencia al documento con el ID especificado
+    // Referencia a la base de datos
+    const dbRef = ref(db, 'dudas');
+    
+    // Consulta para encontrar el documento con el parámetro "paidToken" igual a paidTokenValue
+    const queryRef = query(dbRef, orderByChild('paidToken'), equalTo(paidTokenValue));
+    console.log("queryRef listo". queryRef)
+    const querySnapshot = await get(queryRef);
+    console.log("querysnapshot listo")
 
-    await update(dudaRef, { paid: true }); // Actualiza solo el campo "paid" a true
-
-    console.log(`El campo "paid" del documento con ID ${documentId} se ha actualizado a true.`);
+    // Verifica si se encontró algún documento con el valor especificado de "paidToken"
+    if (querySnapshot.exists()) {
+      console.log("existe")
+      querySnapshot.forEach(async(childSnapshot) => {
+        const dudaRef = childSnapshot.ref;
+        await update(dudaRef, { paid: true }); // Actualiza el campo "paid" a true
+        console.log(`El campo "paid" del documento con paidToken ${paidTokenValue} se ha actualizado a true.`);
+      });
+    } else {
+      console.log(`No se encontró ningún documento con paidToken ${paidTokenValue}.`);
+    }
   } catch (error) {
-    console.error(`Error al actualizar el campo "paid" para el documento con ID ${documentId}:`, error);
+    console.error(`Error al actualizar el campo "paid" para el documento con paidToken ${paidTokenValue}:`, error);
   }
 };
+
 
 exports.create = asyncHandler(async function (request, response, next) {
     let body = request.body;
 
-    const dudaKey = await writeDudaData(body);
-
+    
     let buyOrder = "O-" + Math.floor(Math.random() * 10000) + 1;
     let sessionId = "S-" + Math.floor(Math.random() * 10000) + 1;
     let amount = Math.floor(Math.random() * 1000) + 1001;
     let returnUrl =
-      request.protocol + "://" + request.get("host") + `/webpay_plus/commit`;
-  
+    request.protocol + "://" + request.get("host") + `/webpay_plus/commit`;
+    
     const createResponse = await (new WebpayPlus.Transaction()).create(
       buyOrder,
       sessionId,
       amount,
       returnUrl
     );
-  
+    
     let token = createResponse.token;
     let url = createResponse.url;
-  
+    
     let viewData = {
       buyOrder,
       sessionId,
       amount,
       returnUrl,
       token,
-      url,
-      dudaKey
+      url
     };
+    await writeDudaData(body, token);
 
     console.log("res: ", viewData); 
     response.json(viewData);
@@ -88,8 +116,6 @@ exports.create = asyncHandler(async function (request, response, next) {
     console.log(request);
     console.log("================================================================================");
     let params = request.method === 'GET' ? request.query : request.body;
-    let dudaKey = params.key;
-    console.log("dudaKey commit: ", dudaKey);
     // TODO: puede que el cliente no esté enviando el parámetro o el servidor no lo está interpretando correctamente.
     let token = params.token_ws;
     let tbkToken = params.TBK_TOKEN;
@@ -110,11 +136,11 @@ exports.create = asyncHandler(async function (request, response, next) {
         token,
         commitResponse,
       };
+      if(commitResponse.response_code==0){
+        await setPaidByToken(token);
+        response.json(viewData);
+      }
       
-      response.json(viewData);
-      console.log("params: ", params);
-      
-      setPaid(dudaKey);
       return;
     }
     else if (!token && !tbkToken) {//Flujo 2
