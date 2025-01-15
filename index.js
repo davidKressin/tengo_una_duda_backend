@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 const cors = require('cors');
 const path = require("path");
@@ -24,12 +25,17 @@ app.use(cors());
 
 // Directorio Público
 app.use( express.static('public') );
+// app.use('/', (req, res)=> res.sendFile(path.join(__dirname,"public/index.html")) );
 
 // Lectura y parseo del body
 app.use( express.json() );
 
+// Cookies
+app.use(cookieParser());
+
 // Rutas
 app.use('/webpay_plus', webpayPlusRouter );
+
 
 
 // Escuchar peticiones
