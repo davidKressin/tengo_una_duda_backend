@@ -63,11 +63,11 @@ const setPaidByToken = async (paidTokenValue) => {
 
 exports.create = asyncHandler(async function (request, response, next) {
   let body = request.body;
-
+  let {recompensa:amount} = body;
 
   let buyOrder = "O-" + Math.floor(Math.random() * 10000) + 1;
   let sessionId = "S-" + Math.floor(Math.random() * 10000) + 1;
-  let amount = Math.floor(Math.random() * 1000) + 1001;
+  // let amount = Math.floor(Math.random() * 1000) + 1001;
   let returnUrl =
     request.protocol + "://" + request.get("host") + `/webpay_plus/commit`;
 
@@ -154,9 +154,9 @@ exports.commit = asyncHandler(async function (request, response, next) {
   }
 
   // Configura las cookies
-  res.cookie('step', step, { httpOnly: true });
-  res.cookie('stepDescription', stepDescription, { httpOnly: true });
-  res.cookie('viewData', viewData, { httpOnly: true });
+  response.cookie('step', step, { httpOnly: true });
+  response.cookie('stepDescription', stepDescription, { httpOnly: true });
+  response.cookie('viewData', viewData, { httpOnly: true });
 
   const frontendURL = `http://localhost:5173/public?enviado=false`;
   response.redirect(frontendURL);

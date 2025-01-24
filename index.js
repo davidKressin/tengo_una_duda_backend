@@ -17,8 +17,6 @@ app.use(bodyParser.json());
 // Base de datos
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
 
 // CORS
 app.use(cors());
@@ -26,7 +24,6 @@ app.use(cors());
 // Directorio Público
 app.use( express.static('public') );
 // app.use('/', (req, res)=> res.sendFile(path.join(__dirname,"public/index.html")) );
-
 // Lectura y parseo del body
 app.use( express.json() );
 
@@ -35,6 +32,7 @@ app.use(cookieParser());
 
 // Rutas
 app.use('/webpay_plus', webpayPlusRouter );
+
 
 
 
