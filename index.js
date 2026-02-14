@@ -7,8 +7,7 @@ const cors = require('cors');
 const path = require("path");
 const fs = require("fs");
 var webpayPlusRouter = require("./routes/webpay_plus");
-
-
+var paesRouter = require("./routes/paes");
 
 // Crear el servidor de express
 const app = express();
@@ -22,21 +21,22 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Directorio Público
-app.use( express.static('public') );
+app.use(express.static('public'));
 // app.use('/', (req, res)=> res.sendFile(path.join(__dirname,"public/index.html")) );
 // Lectura y parseo del body
-app.use( express.json() );
+app.use(express.json());
 
 // Cookies
 app.use(cookieParser());
 
 // Rutas
-app.use('/webpay_plus', webpayPlusRouter );
+app.use('/webpay_plus', webpayPlusRouter);
+app.use('/api/paes', paesRouter);
 
 
 
 
 // Escuchar peticiones
-app.listen( process.env.PORT, () => {
-    console.log(`Servidor corriendo en puerto ${ process.env.PORT }`);
+app.listen(process.env.PORT, () => {
+    console.log(`Servidor corriendo en puerto ${process.env.PORT}`);
 });

@@ -1,0 +1,56 @@
+{
+  "userId": "DqDJ4VbMVVZC0KvBSTlp34CNW3s1",
+  "userName": "David Kressin",
+  "userEmail": "dkressing@outlook.com",
+  "testId": "m1",
+  "score": 0,
+  "correctAnswers": 0,
+  "totalQuestions": 5,
+  "incorrectQuestions": [
+    {
+      "id": 1,
+      "question": "¿Cuál es el 25% de 80?",
+      "userAnswer": "30",
+      "correctAnswer": "20",
+      "topic": "Números"
+    },
+    {
+      "id": 2,
+      "question": "Si 2x + 5 = 15, ¿cuál es el valor de x?",
+      "userAnswer": "20",
+      "correctAnswer": "5",
+      "topic": "Álgebra y Funciones"
+    },
+    {
+      "id": 3,
+      "question": "¿Cuál es el área de un círculo con radio 3? (Use π = 3)",
+      "userAnswer": "81",
+      "correctAnswer": "27",
+      "topic": "Geometría"
+    },
+    {
+      "id": 4,
+      "question": "Si lanzas un dado justo de 6 caras, ¿cuál es la probabilidad de obtener un número par?",
+      "userAnswer": "2/3",
+      "correctAnswer": "1/2",
+      "topic": "Probabilidad y Estadística"
+    },
+    {
+      "id": 5,
+      "question": "Un artículo cuesta $1.000 y tiene un 10% de descuento. ¿Cuál es su precio final?",
+      "userAnswer": "$1.100",
+      "correctAnswer": "$900",
+      "topic": "Números"
+    }
+  ],
+  "timeSeconds": 21,
+  "timeFormatted": "0:21",
+  "answers": {
+    "1": "30",
+    "2": "20",
+    "3": "81",
+    "4": "2/3",
+    "5": "$1.100"
+  },
+  "timestamp": "2026-02-14T19:20:33.321Z"
+}

@@ -1,0 +1,11 @@
+{
+  "userId": "testUser",
+  "incorrectQuestions": [
+    {
+      "topic": "Números"
+    },
+    {
+      "topic": "Geometría"
+    }
+  ]
+}
